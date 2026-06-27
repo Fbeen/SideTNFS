@@ -32,6 +32,7 @@ add_executable(sidetnfs
     src/romemul.c
     src/gemdrvemul.c
     src/fs_memory.c
+    src/net_wifi.c
     src/firmware/firmware_gemdrvemul.c
 )
 
@@ -56,7 +57,7 @@ target_link_libraries(sidetnfs
     hardware_dma
     hardware_vreg
     hardware_flash
-    pico_cyw43_arch_none
+    pico_cyw43_arch_lwip_threadsafe_background
 )
 
 pico_set_linker_script(sidetnfs ${CMAKE_CURRENT_SOURCE_DIR}/memmap_sidetnfs.ld)

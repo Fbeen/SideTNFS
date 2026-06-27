@@ -1,5 +1,6 @@
 #include "include/romemul.h"
 #include "include/gemdrvemul.h"
+#include "include/net_wifi.h"
 #include "hardware/clocks.h"
 
 int main(void)
@@ -16,14 +17,16 @@ int main(void)
 
     printf("SIDETNFS booting...\n");
 
-    // Init CYW43 (required on Pico W even without WiFi to access board GPIO)
+    // Init CYW43 (required on Pico W to access board GPIO, and for WiFi)
     if (cyw43_arch_init())
     {
         printf("cyw43_arch_init failed\n");
         return -1;
     }
-    // No WiFi needed for M1 — deinit immediately
-    cyw43_arch_deinit();
+
+    // Start async WiFi connection — returns immediately, runs in background IRQ.
+    // GEMDRIVE C: works regardless of whether WiFi succeeds.
+    net_wifi_start();
 
     // Copy the 68k GEMDRIVE driver firmware to ROM_IN_RAM (ROM4 bank)
     COPY_FIRMWARE_TO_RAM((uint16_t *)gemdrvemulROM, gemdrvemulROM_length);

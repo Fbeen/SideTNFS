@@ -11,6 +11,9 @@ elf2uf2/
 *~
 .DS_Store
 
+# WiFi credentials — copy wifi_config.h.example → wifi_config.h and fill in your own
+src/wifi_config.h
+
 # Claude Code session data (local only)
 .claude/
 

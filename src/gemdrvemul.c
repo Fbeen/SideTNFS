@@ -1,5 +1,6 @@
 #include "include/gemdrvemul.h"
 #include "include/fs_backend.h"
+#include "include/net_wifi.h"
 
 // ─── Atari GEMDRIVE protocol layer ───────────────────────────────────────────
 //   Handles the ROM3 command/response protocol with the Atari 68k firmware.
@@ -263,6 +264,10 @@ void init_gemdrvemul(void)
     {
         *((volatile uint32_t *)(mem + GEMDRVEMUL_RANDOM_TOKEN_SEED)) = ++seed_counter;
         tight_loop_contents();
+
+        // Check WiFi status once per second; logs connect/fail/timeout.
+        // No-op after WiFi is resolved (connected or failed).
+        net_wifi_poll();
 
         uint16_t cmd = active_command_id;
         if (cmd == 0xFFFF)
