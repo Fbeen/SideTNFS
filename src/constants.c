@@ -1,0 +1,32 @@
+#include "include/constants.h"
+
+const uint32_t SELECT_GPIO = 5;
+
+const uint READ_ADDR_GPIO_BASE = 6;
+const uint READ_ADDR_PIN_COUNT = 16;
+const uint READ_SIGNAL_GPIO_BASE = 27;
+const uint READ_SIGNAL_PIN_COUNT = 1;
+
+const uint WRITE_DATA_GPIO_BASE = 6;
+const uint WRITE_DATA_PIN_COUNT = 16;
+const uint WRITE_SIGNAL_GPIO_BASE = 28;
+const uint WRITE_SIGNAL_PIN_COUNT = 1;
+
+const uint8_t ROM_BANKS = 2;
+const uint32_t FLASH_ROM_LOAD_OFFSET = 0xE0000;
+const uint32_t FLASH_ROM4_LOAD_OFFSET = 0xE0000;
+const uint32_t FLASH_ROM3_LOAD_OFFSET = 0xE0000 + 0x10000;
+const uint32_t ROM_SIZE_BYTES = 0x10000;
+const uint32_t ROM_SIZE_WORDS = 0x10000 / 2;
+const uint32_t ROM_SIZE_LONGWORDS = 0x10000 / 4;
+const uint32_t ROM_IN_RAM_ADDRESS = 0x20020000;
+const uint32_t ROMS_START_ADDRESS = 0x20020000;
+const uint32_t ROM4_START_ADDRESS = 0x20020000;
+const uint32_t ROM3_START_ADDRESS = 0x20020000 + 0x10000;
+const uint32_t ROM4_END_ADDRESS = 0x20020000 + 0x10000;
+const uint32_t ROM3_END_ADDRESS = 0x20020000 + 0x20000;
+const uint32_t CONFIG_FLASH_SIZE = 8192;
+const uint32_t CONFIG_FLASH_OFFSET = 0xE0000 - 8192;
+
+const uint32_t ATARI_ROM4_START_ADDRESS = 0xFA0000;
+const uint32_t ATARI_ROM3_START_ADDRESS = 0xFB0000;
