@@ -267,15 +267,24 @@ void init_gemdrvemul(void)
         tight_loop_contents();
 
 #ifdef SIDETNFS_DEBUG
-        // Banner printed once on the first loop iteration.  By this point the
-        // GEMDRIVE loop is running and USB is accepting data, so these lines
-        // will always be visible even if the terminal was opened after boot.
-        static bool banner_shown = false;
-        if (!banner_shown) {
-            banner_shown = true;
-            LOG("--- SIDETNFS GEMDRIVE ready, C: active ---\n");
-            net_wifi_log_status();
-            net_test_log_result();
+        // Print a status banner every time USB serial connects or reconnects.
+        // Checked once per second to avoid overhead; fires on every DTR rising
+        // edge so the user sees current state whenever they open the terminal,
+        // regardless of how late in the Atari boot sequence that happens.
+        {
+            static bool     prev_usb      = false;
+            static uint32_t usb_check_ms  = 0;
+            uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+            if (now_ms - usb_check_ms >= 1000) {
+                usb_check_ms = now_ms;
+                bool cur_usb = stdio_usb_connected();
+                if (cur_usb && !prev_usb) {
+                    LOG("--- SIDETNFS GEMDRIVE ready, C: active ---\n");
+                    net_wifi_log_status();
+                    net_test_log_result();
+                }
+                prev_usb = cur_usb;
+            }
         }
 #endif
 
