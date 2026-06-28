@@ -25,13 +25,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
 
+set(FS_BACKEND "TNFS" CACHE STRING "Filesystem backend: MEMORY or TNFS")
+
 add_executable(sidetnfs
     src/main.c
     src/constants.c
     src/tprotocol.c
     src/romemul.c
     src/gemdrvemul.c
-    src/fs_memory.c
     src/net_wifi.c
     src/net_test.c
     src/net_udp_test.c
@@ -39,6 +40,16 @@ add_executable(sidetnfs
     src/tnfs_test.c
     src/firmware/firmware_gemdrvemul.c
 )
+
+if(FS_BACKEND STREQUAL "TNFS")
+    target_sources(sidetnfs PRIVATE src/fs_tnfs.c)
+    target_compile_definitions(sidetnfs PRIVATE FS_BACKEND_TNFS=1)
+    message(STATUS "sidetnfs: filesystem backend = TNFS")
+else()
+    target_sources(sidetnfs PRIVATE src/fs_memory.c)
+    target_compile_definitions(sidetnfs PRIVATE FS_BACKEND_MEMORY=1)
+    message(STATUS "sidetnfs: filesystem backend = MEMORY")
+endif()
 
 pico_generate_pio_header(sidetnfs ${CMAKE_CURRENT_SOURCE_DIR}/src/romemul.pio)
 

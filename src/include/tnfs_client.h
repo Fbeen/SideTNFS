@@ -23,6 +23,8 @@
 #define TNFS_CMD_OPENDIR       0x10u
 #define TNFS_CMD_READDIR       0x11u
 #define TNFS_CMD_CLOSEDIR      0x12u
+#define TNFS_CMD_OPENDIRX      0x17u   // extended opendir: returns count + handle
+#define TNFS_CMD_READDIRX      0x18u   // extended readdir: returns flags + size + name per entry
 #define TNFS_CMD_STAT          0x24u
 #define TNFS_CMD_OPEN          0x29u
 #define TNFS_CMD_READ          0x21u
@@ -31,6 +33,14 @@
 // Result codes
 #define TNFS_OK                0x00u
 #define TNFS_EOF               0x21u   // end of file / end of directory
+
+// READDIRX entry flags (bits in the flags byte of each entry)
+#define TNFS_DIRENTRY_DIR      0x01u   // entry is a directory
+#define TNFS_DIRENTRY_HIDDEN   0x02u   // entry is hidden
+#define TNFS_DIRENTRY_SPECIAL  0x04u   // entry is a special file (device, socket, …)
+
+// READDIRX response status byte (buf[6] of a READDIRX response)
+#define TNFS_DIRSTATUS_EOF     0x01u   // this is the last batch; no more entries follow
 
 // ─── Transport API ────────────────────────────────────────────────────────────
 // All calls must be made inside cyw43_arch_lwip_begin() / cyw43_arch_lwip_end().
